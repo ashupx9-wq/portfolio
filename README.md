@@ -12,7 +12,7 @@ A sleek and modern developer portfolio designed to **stand out, impress, and get
 - 🌐 Ready to deploy
 
 ## Live Demo
-👉 
+👉 https://ashupx9-wq.github.io/portfolio
 
 ## 📸 Preview
 <img width="1919" height="906" alt="Screenshot 2026-04-25 140730" src="https://github.com/user-attachments/assets/05c7e857-2dab-45e1-9d1e-5a513f271960" />
@@ -26,6 +26,5 @@ A sleek and modern developer portfolio designed to **stand out, impress, and get
 ## 🚀 Getting Started
 
 ```bash
-git clone 
-cd 
-open index.html
+git clone https://ashupx9-wq.github.io/portfolio
+
