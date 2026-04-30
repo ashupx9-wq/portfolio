@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ashutosh | Full-Stack Developer & Security Researcher · IIT Delhi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-pale: #F5EDD5;
+    --obsidian: #0A0A0E;
+    --obsidian-2: #111118;
+    --obsidian-3: #1A1A24;
+    --obsidian-4: #22222E;
+    --smoke: #8888A0;
+    --mist: #CCCCDD;
+    --white: #F8F8FC;
+    --accent-blue: #4A9EFF;
+    --accent-teal: #2DD4BF;
+    --accent-red: #FF4D6A;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Syne', sans-serif;
+    background: var(--obsidian);
+    color: var(--white);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease;
+    transform: translate(-50%, -50%);
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(201,168,76,0.4);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.08s linear, width 0.2s, height 0.2s, border-color 0.2s;
+    transform: translate(-50%, -50%);
+  }
+  .cursor-ring.hover { width: 56px; height: 56px; border-color: rgba(201,168,76,0.8); }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.5rem 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(10,10,14,0.7);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(201,168,76,0.08);
+  }
+  .nav-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.02em;
+    color: var(--white);
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--smoke); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta {
+    font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--gold); border: 1px solid rgba(201,168,76,0.4);
+    padding: 0.55rem 1.4rem; border-radius: 2px;
+    text-decoration: none; transition: all 0.2s;
+  }
+  .nav-cta:hover { background: rgba(201,168,76,0.1); border-color: var(--gold); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 8rem 4rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 60% at 80% 50%, rgba(201,168,76,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(74,158,255,0.04) 0%, transparent 70%);
+  }
+
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse at 80% 50%, black 20%, transparent 70%);
+  }
+
+  .hero-left { position: relative; z-index: 2; }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.08em;
+    color: var(--gold); border: 1px solid rgba(201,168,76,0.25);
+    padding: 0.4rem 0.9rem; border-radius: 2px;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--gold); border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
+
+  .hero-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(3.5rem, 6vw, 5.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+  .hero-name em { color: var(--gold); font-style: italic; }
+
+  .hero-title {
+    font-size: 0.95rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--smoke); margin-bottom: 2rem;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+
+  .hero-desc {
+    font-size: 1.05rem; line-height: 1.8;
+    color: var(--mist); max-width: 500px;
+    margin-bottom: 3rem;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+  .hero-desc strong { color: var(--white); font-weight: 600; }
+
+  .hero-actions {
+    display: flex; gap: 1rem; align-items: center;
+    animation: fadeUp 0.8s 0.4s ease both;
+  }
+  .btn-primary {
+    background: var(--gold); color: var(--obsidian);
+    font-family: 'Syne', sans-serif;
+    font-size: 0.82rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.85rem 2rem; border-radius: 2px;
+    text-decoration: none; transition: all 0.2s;
+    border: none; cursor: none;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+  .btn-secondary {
+    font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--smoke); text-decoration: none;
+    display: flex; align-items: center; gap: 0.5rem;
+    transition: color 0.2s;
+  }
+  .btn-secondary:hover { color: var(--white); }
+  .btn-secondary .arrow { transition: transform 0.2s; }
+  .btn-secondary:hover .arrow { transform: translateX(4px); }
+
+  .hero-right {
+    display: flex; justify-content: center; align-items: center;
+    position: relative; z-index: 2;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+
+  .iit-badge-wrap {
+    position: relative;
+    width: 340px; height: 340px;
+  }
+  .iit-ring {
+    position: absolute; inset: 0;
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 50%;
+    animation: spinSlow 20s linear infinite;
+  }
+  .iit-ring-2 {
+    position: absolute; inset: 20px;
+    border: 1px dashed rgba(201,168,76,0.1);
+    border-radius: 50%;
+    animation: spinSlow 30s linear infinite reverse;
+  }
+  @keyframes spinSlow { to { transform: rotate(360deg); } }
+  .iit-ring-dots {
+    position: absolute; inset: 0; border-radius: 50%;
+    animation: spinSlow 20s linear infinite;
+  }
+  .dot {
+    position: absolute; width: 6px; height: 6px;
+    background: var(--gold); border-radius: 50%;
+  }
+  .dot:nth-child(1) { top: 0; left: 50%; transform: translateX(-50%); }
+  .dot:nth-child(2) { bottom: 0; left: 50%; transform: translateX(-50%); }
+  .dot:nth-child(3) { left: 0; top: 50%; transform: translateY(-50%); }
+  .dot:nth-child(4) { right: 0; top: 50%; transform: translateY(-50%); }
+  .iit-center {
+    position: absolute; inset: 40px;
+    background: var(--obsidian-3);
+    border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.2);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 0.5rem;
+  }
+  .iit-logo-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: 3rem; line-height: 1;
+    color: var(--gold); letter-spacing: -0.04em;
+  }
+  .iit-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--smoke); text-align: center; padding: 0 1rem;
+  }
+  .iit-line {
+    width: 40px; height: 1px; background: var(--gold); opacity: 0.4;
+  }
+
+  /* Floating stats */
+  .stat-float {
+    position: absolute;
+    background: var(--obsidian-3);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+  }
+  .stat-float .num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.6rem; color: var(--gold); line-height: 1;
+  }
+  .stat-float .lbl {
+    font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--smoke); margin-top: 0.2rem;
+  }
+  .sf-1 { top: 30px; right: -20px; }
+  .sf-2 { bottom: 60px; left: -30px; }
+  .sf-3 { top: 40%; right: -50px; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* SECTION SHARED */
+  section { padding: 7rem 4rem; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 0.75rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .section-label::after {
+    content: ''; flex: 1; max-width: 60px;
+    height: 1px; background: rgba(201,168,76,0.3);
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    line-height: 1.1; letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+  }
+  .section-title em { color: var(--gold); font-style: italic; }
+
+  /* ABOUT */
+  .about { background: var(--obsidian-2); }
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 5rem; align-items: start; max-width: 1200px; margin: 0 auto;
+  }
+  .about-text p {
+    font-size: 1rem; line-height: 1.85; color: var(--mist);
+    margin-bottom: 1.2rem;
+  }
+  .about-text strong { color: var(--white); }
+  .about-stats {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1.5rem; margin-top: 2.5rem;
+  }
+  .astat {
+    border-top: 1px solid rgba(201,168,76,0.2);
+    padding-top: 1rem;
+  }
+  .astat .n {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.2rem; color: var(--gold);
+  }
+  .astat .l {
+    font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--smoke); margin-top: 0.2rem;
+  }
+  .about-right { display: flex; flex-direction: column; gap: 1.5rem; }
+  .about-card {
+    background: var(--obsidian-3);
+    border: 1px solid rgba(201,168,76,0.1);
+    border-radius: 4px; padding: 1.5rem;
+    transition: border-color 0.2s;
+  }
+  .about-card:hover { border-color: rgba(201,168,76,0.3); }
+  .about-card h4 {
+    font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 0.75rem;
+  }
+  .about-card p { font-size: 0.9rem; line-height: 1.6; color: var(--mist); }
+
+  /* SKILLS */
+  .skills-inner { max-width: 1200px; margin: 0 auto; }
+  .skills-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem; margin-top: 3rem;
+  }
+  .skill-card {
+    background: var(--obsidian-3);
+    border: 1px solid rgba(201,168,76,0.08);
+    border-radius: 4px; padding: 2rem;
+    position: relative; overflow: hidden;
+    transition: all 0.3s;
+  }
+  .skill-card:hover { border-color: rgba(201,168,76,0.3); transform: translateY(-3px); }
+  .skill-card::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .skill-card:hover::before { opacity: 1; }
+  .skill-icon {
+    width: 44px; height: 44px;
+    background: rgba(201,168,76,0.08);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; margin-bottom: 1.2rem;
+  }
+  .skill-card h3 {
+    font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem;
+  }
+  .skill-card p { font-size: 0.85rem; line-height: 1.7; color: var(--smoke); }
+  .skill-tags {
+    display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.2rem;
+  }
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.05em;
+    color: var(--gold); background: rgba(201,168,76,0.08);
+    border: 1px solid rgba(201,168,76,0.15);
+    padding: 0.25rem 0.6rem; border-radius: 2px;
+  }
+
+  /* PROJECTS */
+  .projects { background: var(--obsidian-2); }
+  .projects-inner { max-width: 1200px; margin: 0 auto; }
+  .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 3rem; }
+  .project-card {
+    background: var(--obsidian-3);
+    border: 1px solid rgba(201,168,76,0.1);
+    border-radius: 4px; padding: 2rem;
+    position: relative; overflow: hidden;
+    transition: all 0.3s;
+  }
+  .project-card.featured { grid-column: span 2; }
+  .project-card:hover { border-color: rgba(201,168,76,0.35); transform: translateY(-2px); }
+  .project-card::after {
+    content: ''; position: absolute;
+    bottom: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201,168,76,0.4), transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .project-card:hover::after { opacity: 1; }
+  .project-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem; color: rgba(201,168,76,0.4);
+    margin-bottom: 1rem;
+  }
+  .project-card h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem; margin-bottom: 0.75rem;
+  }
+  .project-card p { font-size: 0.88rem; line-height: 1.7; color: var(--smoke); }
+  .project-meta {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 1.5rem; padding-top: 1.2rem;
+    border-top: 1px solid rgba(201,168,76,0.08);
+  }
+  .project-type {
+    font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--gold);
+  }
+  .project-link {
+    font-size: 0.75rem; color: var(--smoke); text-decoration: none;
+    display: flex; align-items: center; gap: 0.4rem;
+    transition: color 0.2s;
+  }
+  .project-link:hover { color: var(--gold); }
+
+  /* SERVICES */
+  .services-inner { max-width: 1200px; margin: 0 auto; }
+  .services-list { margin-top: 3rem; }
+  .service-row {
+    display: grid; grid-template-columns: 60px 1fr 1fr auto;
+    align-items: center; gap: 2rem;
+    padding: 1.75rem 0;
+    border-top: 1px solid rgba(201,168,76,0.08);
+    transition: all 0.2s;
+  }
+  .service-row:last-child { border-bottom: 1px solid rgba(201,168,76,0.08); }
+  .service-row:hover { padding-left: 0.5rem; }
+  .service-row:hover .service-name { color: var(--gold); }
+  .service-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; color: rgba(201,168,76,0.35);
+  }
+  .service-name { font-size: 1rem; font-weight: 600; transition: color 0.2s; }
+  .service-desc { font-size: 0.85rem; color: var(--smoke); line-height: 1.6; }
+  .service-price {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem; color: var(--gold); white-space: nowrap;
+    text-align: right;
+  }
+  .service-price span { display: block; font-family: 'Syne', sans-serif; font-size: 0.65rem; color: var(--smoke); font-size: 0.65rem; }
+
+  /* TESTIMONIALS */
+  .testimonials { background: var(--obsidian-2); }
+  .testimonials-inner { max-width: 1200px; margin: 0 auto; }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
+  .tcard {
+    background: var(--obsidian-3);
+    border: 1px solid rgba(201,168,76,0.08);
+    border-radius: 4px; padding: 2rem;
+    position: relative;
+  }
+  .tcard::before {
+    content: '"';
+    font-family: 'DM Serif Display', serif;
+    font-size: 4rem; line-height: 1;
+    color: rgba(201,168,76,0.12);
+    position: absolute; top: 1rem; right: 1.5rem;
+  }
+  .tcard p { font-size: 0.9rem; line-height: 1.75; color: var(--mist); margin-bottom: 1.5rem; }
+  .tcard-author { display: flex; align-items: center; gap: 0.75rem; }
+  .tcard-avatar {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: rgba(201,168,76,0.15);
+    border: 1px solid rgba(201,168,76,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem; font-weight: 700; color: var(--gold);
+  }
+  .tcard-name { font-size: 0.85rem; font-weight: 600; }
+  .tcard-role { font-size: 0.72rem; color: var(--smoke); margin-top: 0.1rem; }
+  .stars { color: var(--gold); font-size: 0.75rem; margin-bottom: 1rem; }
+
+  /* PROCESS */
+  .process-inner { max-width: 1200px; margin: 0 auto; }
+  .process-steps {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0; margin-top: 3rem; position: relative;
+  }
+  .process-steps::before {
+    content: ''; position: absolute;
+    top: 28px; left: 12.5%; right: 12.5%;
+    height: 1px; background: rgba(201,168,76,0.2);
+  }
+  .pstep { padding: 0 1.5rem; text-align: center; }
+  .pstep-num {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--obsidian-3);
+    border: 1px solid rgba(201,168,76,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.2rem; color: var(--gold);
+    margin: 0 auto 1.5rem;
+    position: relative; z-index: 1;
+  }
+  .pstep h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.6rem; }
+  .pstep p { font-size: 0.8rem; color: var(--smoke); line-height: 1.6; }
+
+  /* CTA */
+  .cta-section {
+    background: var(--obsidian-2);
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .cta-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(201,168,76,0.05) 0%, transparent 70%);
+  }
+  .cta-section .section-title { font-size: clamp(2.5rem, 5vw, 4rem); }
+  .cta-section p {
+    font-size: 1.05rem; color: var(--smoke); max-width: 500px;
+    margin: 0 auto 2.5rem; line-height: 1.8;
+  }
+  .cta-actions { display: flex; gap: 1rem; justify-content: center; align-items: center; }
+  .cta-contact {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem; color: var(--smoke); margin-top: 2rem;
+  }
+  .cta-contact a { color: var(--gold); text-decoration: none; }
+
+  /* FOOTER */
+  footer {
+    background: var(--obsidian);
+    border-top: 1px solid rgba(201,168,76,0.08);
+    padding: 2.5rem 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  footer .copy {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; color: rgba(136,136,160,0.5);
+  }
+  .footer-iit {
+    font-size: 0.75rem; color: var(--smoke);
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .footer-iit span { color: var(--gold); font-weight: 600; }
+
+  /* Scroll reveal */
+  .reveal { opacity: 0; transform: translateY(30px); transition: all 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--obsidian); }
+  ::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.3); border-radius: 2px; }
+
+  /* Hamburger */
+  .nav-hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    background: none; border: none; cursor: pointer; padding: 4px;
+  }
+  .nav-hamburger span {
+    display: block; width: 22px; height: 1.5px;
+    background: var(--mist); border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  /* Mobile menu overlay */
+  .mobile-menu {
+    display: none; position: fixed; inset: 0; z-index: 90;
+    background: rgba(10,10,14,0.97);
+    backdrop-filter: blur(20px);
+    flex-direction: column; align-items: center; justify-content: center;
+    gap: 0.5rem;
+  }
+  .mobile-menu.open { display: flex; animation: modalFadeIn 0.2s ease; }
+  .mobile-menu a {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.2rem; color: var(--mist); text-decoration: none;
+    padding: 0.6rem 2rem;
+    transition: color 0.2s;
+    border-bottom: 1px solid rgba(201,168,76,0.06);
+    width: 100%; text-align: center;
+  }
+  .mobile-menu a:hover { color: var(--gold); }
+  .mobile-menu .mobile-hire {
+    margin-top: 1.5rem;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gold); border: 1px solid rgba(201,168,76,0.35);
+    border-radius: 2px; padding: 0.85rem 2.5rem;
+    width: auto;
+  }
+
+  @media (max-width: 480px) {
+    .nav-hamburger { display: flex; }
+    .nav-cta { display: none; }
+  }
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 2rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 7rem 2rem 4rem; }
+    .hero-right { display: none; }
+    section { padding: 5rem 2rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .skills-grid { grid-template-columns: 1fr 1fr; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .project-card.featured { grid-column: span 1; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .process-steps { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .process-steps::before { display: none; }
+    .service-row { grid-template-columns: 50px 1fr; grid-template-rows: auto auto; gap: 0.4rem 1rem; }
+    .service-desc { grid-column: 2; }
+    .service-price { grid-column: 2; text-align: left; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 480px) {
+    /* Nav — hamburger feel, minimal */
+    nav { padding: 1rem 1.25rem; }
+    .nav-logo { font-size: 1.2rem; }
+    .nav-cta { font-size: 0.72rem; padding: 0.45rem 1rem; }
+
+    /* Hero */
+    .hero { padding: 5.5rem 1.25rem 3rem; min-height: auto; }
+    .hero-badge { font-size: 0.6rem; padding: 0.35rem 0.75rem; margin-bottom: 1.5rem; }
+    .hero-name { font-size: 3rem; margin-bottom: 0.4rem; }
+    .hero-title { font-size: 0.78rem; letter-spacing: 0.14em; margin-bottom: 1.25rem; }
+    .hero-desc { font-size: 0.95rem; margin-bottom: 2rem; }
+    .hero-actions { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .btn-primary { width: 100%; text-align: center; padding: 1rem; font-size: 0.85rem; }
+
+    /* Sections */
+    section { padding: 3.5rem 1.25rem; }
+    .section-label { font-size: 0.62rem; }
+    .section-title { font-size: 1.9rem; margin-bottom: 1rem; }
+
+    /* About */
+    .about-grid { gap: 2.5rem; }
+    .about-stats { grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .astat .n { font-size: 1.8rem; }
+    .about-card { padding: 1.2rem; }
+
+    /* Skills */
+    .skills-grid { grid-template-columns: 1fr; gap: 1rem; }
+    .skill-card { padding: 1.5rem; }
+    .skill-icon { width: 38px; height: 38px; font-size: 1rem; margin-bottom: 1rem; }
+
+    /* Projects */
+    .projects-grid { gap: 1rem; }
+    .project-card { padding: 1.5rem; }
+    .project-card h3 { font-size: 1.2rem; }
+
+    /* Services */
+    .service-row {
+      display: flex; flex-direction: column; gap: 0.3rem;
+      padding: 1.25rem 0;
+    }
+    .service-num { font-size: 0.6rem; }
+    .service-name { font-size: 0.95rem; }
+    .service-desc { font-size: 0.8rem; }
+    .service-price { font-size: 1rem; margin-top: 0.25rem; }
+
+    /* Process */
+    .process-steps { grid-template-columns: 1fr; gap: 1.5rem; }
+    .pstep { padding: 0; }
+    .pstep-num { width: 48px; height: 48px; font-size: 1rem; margin-bottom: 1rem; }
+
+    /* Testimonials */
+    .tcard { padding: 1.5rem; }
+    .tcard p { font-size: 0.85rem; }
+
+    /* CTA */
+    .cta-section .section-title { font-size: 2rem; }
+    .cta-section p { font-size: 0.9rem; }
+    .cta-actions { flex-direction: column; gap: 0.75rem; width: 100%; }
+    .cta-actions .btn-primary { width: 100%; text-align: center; }
+    .cta-contact { font-size: 0.78rem; }
+
+    /* Footer */
+    footer { padding: 2rem 1.25rem; gap: 0.75rem; }
+    footer .copy { font-size: 0.62rem; }
+    .footer-iit { font-size: 0.7rem; }
+
+    /* Modal */
+    .modal-box { padding: 1.75rem 1.25rem; border-radius: 12px; }
+    .modal-title { font-size: 1.5rem; }
+    .modal-btn { padding: 0.85rem 1rem; }
+    .modal-btn-icon { width: 36px; height: 36px; font-size: 1rem; }
+    .modal-btn-value { font-size: 0.82rem; }
+
+    /* Keep cursor hidden on touch — but keep ALL other animations */
+    .cursor, .cursor-ring { display: none; }
+    body { cursor: auto; }
+    a, button { cursor: pointer; }
+
+    /* ── MOBILE PREMIUM ANIMATIONS ── */
+
+    /* Hero badge shimmer sweep */
+    .hero-badge { position: relative; overflow: hidden; }
+    .hero-badge::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(105deg, transparent 40%, rgba(201,168,76,0.25) 50%, transparent 60%);
+      animation: shimmerBadge 2.8s ease-in-out infinite;
+    }
+    @keyframes shimmerBadge {
+      0% { transform: translateX(-100%); }
+      60%, 100% { transform: translateX(200%); }
+    }
+
+    /* Hero name gold glow pulse */
+    @keyframes namePulse {
+      0%, 100% { text-shadow: none; }
+      50% { text-shadow: 0 0 40px rgba(201,168,76,0.2); }
+    }
+    .hero-name { animation: fadeUp 0.8s ease both, namePulse 4s 1.5s ease-in-out infinite; }
+
+    /* Stat numbers pop in */
+    .reveal.visible .astat .n {
+      animation: statPop 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    .astat:nth-child(1) .n { animation-delay: 0.05s; }
+    .astat:nth-child(2) .n { animation-delay: 0.15s; }
+    .astat:nth-child(3) .n { animation-delay: 0.25s; }
+    .astat:nth-child(4) .n { animation-delay: 0.35s; }
+    @keyframes statPop {
+      from { opacity: 0; transform: scale(0.6) translateY(10px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* Service rows slide from right */
+    .reveal.visible .service-row {
+      animation: slideFromRight 0.5s cubic-bezier(0.16,1,0.3,1) both;
+    }
+    .service-row:nth-child(1) { animation-delay: 0s; }
+    .service-row:nth-child(2) { animation-delay: 0.07s; }
+    .service-row:nth-child(3) { animation-delay: 0.14s; }
+    .service-row:nth-child(4) { animation-delay: 0.21s; }
+    .service-row:nth-child(5) { animation-delay: 0.28s; }
+    @keyframes slideFromRight {
+      from { opacity: 0; transform: translateX(24px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Process step numbers spin-in */
+    .reveal.visible .pstep-num {
+      animation: spinIn 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    .pstep:nth-child(1) .pstep-num { animation-delay: 0s; }
+    .pstep:nth-child(2) .pstep-num { animation-delay: 0.1s; }
+    .pstep:nth-child(3) .pstep-num { animation-delay: 0.2s; }
+    .pstep:nth-child(4) .pstep-num { animation-delay: 0.3s; }
+    @keyframes spinIn {
+      from { opacity: 0; transform: rotate(-90deg) scale(0.5); }
+      to   { opacity: 1; transform: rotate(0deg) scale(1); }
+    }
+
+    /* CTA background breathe */
+    .cta-bg { animation: ctaGlow 3s ease-in-out infinite alternate; }
+    @keyframes ctaGlow {
+      from { opacity: 0.6; transform: scale(1); }
+      to   { opacity: 1; transform: scale(1.08); }
+    }
+
+    /* Button shimmer */
+    .btn-primary { position: relative; overflow: hidden; }
+    .btn-primary::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.22) 50%, transparent 60%);
+      animation: btnShimmer 3s 2s ease-in-out infinite;
+    }
+    @keyframes btnShimmer {
+      0% { transform: translateX(-100%); }
+      40%, 100% { transform: translateX(200%); }
+    }
+
+    /* Tap states */
+    .skill-card:active { transform: scale(0.97); border-color: rgba(201,168,76,0.4); }
+    .project-card:active { border-color: rgba(201,168,76,0.5); box-shadow: 0 0 24px rgba(201,168,76,0.1); }
+    .tcard:active { transform: translateY(-3px); border-color: rgba(201,168,76,0.3); }
+
+    /* Mobile menu items stagger in */
+    .mobile-menu.open a {
+      animation: menuItemIn 0.4s cubic-bezier(0.16,1,0.3,1) both;
+    }
+    .mobile-menu.open a:nth-child(1) { animation-delay: 0.05s; }
+    .mobile-menu.open a:nth-child(2) { animation-delay: 0.1s; }
+    .mobile-menu.open a:nth-child(3) { animation-delay: 0.15s; }
+    .mobile-menu.open a:nth-child(4) { animation-delay: 0.2s; }
+    .mobile-menu.open a:nth-child(5) { animation-delay: 0.25s; }
+    .mobile-menu.open a:nth-child(6) { animation-delay: 0.32s; }
+    @keyframes menuItemIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Floating gold particles in hero */
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 2px; height: 2px;
+      background: var(--gold); border-radius: 50%;
+      top: 25%; left: 80%;
+      box-shadow:
+        -60px 40px 0 rgba(201,168,76,0.4),
+         40px -30px 0 rgba(201,168,76,0.25),
+        -100px 80px 0 rgba(201,168,76,0.15),
+         80px 60px 0 rgba(201,168,76,0.3);
+      animation: floatParticles 6s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+    @keyframes floatParticles {
+      from { transform: translate(0, 0); opacity: 0.6; }
+      to   { transform: translate(-8px, -14px); opacity: 1; }
+    }
+
+    /* Nav logo load bounce */
+    .nav-logo { animation: logoLoad 0.9s cubic-bezier(0.34,1.56,0.64,1) both; }
+    @keyframes logoLoad {
+      from { opacity: 0; transform: scale(0.7); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    /* Gold line under section-label grows in */
+    .section-label::after {
+      transform-origin: left;
+      animation: growLine 0.6s 0.3s ease both;
+    }
+    @keyframes growLine {
+      from { transform: scaleX(0); opacity: 0; }
+      to   { transform: scaleX(1); opacity: 1; }
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">A<span>.</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#" class="nav-cta" onclick="openHireModal(event)">Hire Me</a>
+  <button class="nav-hamburger" id="navHamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="closeMobileMenu()">About</a>
+  <a href="#skills" onclick="closeMobileMenu()">Skills</a>
+  <a href="#projects" onclick="closeMobileMenu()">Projects</a>
+  <a href="#services" onclick="closeMobileMenu()">Services</a>
+  <a href="#contact" onclick="closeMobileMenu()">Contact</a>
+  <a href="#" class="mobile-hire" onclick="closeMobileMenu(); openHireModal(event)">Hire Me →</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-left">
+    <div class="hero-badge">
+      IIT Delhi · Computer Science · Available for Projects
+    </div>
+    <h1 class="hero-name">
+      Ashutosh
+    </h1>
+    <p class="hero-title">Full-Stack Developer &amp; Security Researcher</p>
+    <p class="hero-desc">
+      I build <strong>production-grade digital products</strong> — architecturally secure, blazingly fast, and obsessively polished. Computer Science @ IIT Delhi means I solve problems others can't.
+    </p>
+    <div class="hero-actions">
+      <a href="#projects" class="btn-primary">View My Work</a>
+      <a href="#contact" class="btn-secondary">Let's Talk <span class="arrow">→</span></a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="iit-badge-wrap">
+      <div class="iit-ring">
+        <div class="iit-ring-dots">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+      </div>
+      <div class="iit-ring-2"></div>
+      <div class="iit-center">
+        <div class="iit-logo-text">IIT</div>
+        <div class="iit-line"></div>
+        <div class="iit-sub">Delhi<br>Computer Science</div>
+      </div>
+      <div class="stat-float sf-1">
+        <div class="num">JEE</div>
+        <div class="lbl">Top 0.1% Qualifier</div>
+      </div>
+      <div class="stat-float sf-2">
+        <div class="num">CS</div>
+        <div class="lbl">Core Engineering</div>
+      </div>
+      <div class="stat-float sf-3">
+        <div class="num">5★</div>
+        <div class="lbl">Delivery Rate</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <div class="section-label">001 · Who I Am</div>
+      <h2 class="section-title">Built for <em>hard</em><br>problems</h2>
+      <p>
+        Getting into IIT Delhi's Computer Science program means surviving one of the world's most competitive examinations — only <strong>~3,000 out of 1.2 million</strong> candidates make it each year. I did.
+      </p>
+      <p>
+        That same first-principles thinking I applied to crack JEE, I now apply to every client problem. Whether it's architecting a secure multi-tenant SaaS, reverse-engineering a broken legacy API, or optimizing a database that's choking at scale — I find the elegant solution.
+      </p>
+      <p>
+        My work sits at the intersection of <strong>full-stack engineering and cybersecurity</strong>. I don't just build apps — I build apps that <em>don't get hacked</em>, don't go down, and delight users.
+      </p>
+      <div class="about-stats">
+        <div class="astat">
+          <div class="n">∞</div>
+          <div class="l">Problems Solved</div>
+        </div>
+        <div class="astat">
+          <div class="n">0</div>
+          <div class="l">Missed Deadlines</div>
+        </div>
+        <div class="astat">
+          <div class="n">IIT</div>
+          <div class="l">Pedigree &amp; Precision</div>
+        </div>
+        <div class="astat">
+          <div class="n">24h</div>
+          <div class="l">Response Time</div>
+        </div>
+      </div>
+    </div>
+    <div class="about-right reveal">
+      <div class="about-card">
+        <h4>⚡ The IIT Advantage</h4>
+        <p>A CS degree from IIT Delhi is a 4-year gauntlet of algorithms, systems programming, distributed systems, and applied research. You're getting someone trained to solve any computational problem, not just follow tutorials.</p>
+      </div>
+      <div class="about-card">
+        <h4>🔐 Security-First Mindset</h4>
+        <p>Every application I build is reviewed through an attacker's lens — OWASP Top 10, secure authentication flows, SQL injection prevention, proper secret management. Security isn't an afterthought; it's the architecture.</p>
+      </div>
+      <div class="about-card">
+        <h4>🤝 Client Communication</h4>
+        <p>I deliver progress updates before you ask. Technical decisions are explained in plain language. Scope changes are scoped properly. Clients describe working with me as "refreshingly professional."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="skills-inner">
+    <div class="reveal">
+      <div class="section-label">002 · Technical Stack</div>
+      <h2 class="section-title">What I bring to<br>your <em>product</em></h2>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <div class="skill-icon">⚛</div>
+        <h3>Frontend Engineering</h3>
+        <p>Pixel-perfect, performance-optimized UIs with React and Next.js. I care deeply about Lighthouse scores, Core Web Vitals, and accessibility — because your users deserve fast interfaces.</p>
+        <div class="skill-tags">
+          <span class="tag">React</span>
+          <span class="tag">Next.js</span>
+          <span class="tag">TypeScript</span>
+          <span class="tag">TailwindCSS</span>
+          <span class="tag">Redux</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">⚙</div>
+        <h3>Backend &amp; APIs</h3>
+        <p>Scalable server-side architecture with Node.js, Python, and Go. RESTful APIs, GraphQL, microservices, message queues — designed for growth from day one.</p>
+        <div class="skill-tags">
+          <span class="tag">Node.js</span>
+          <span class="tag">Python</span>
+          <span class="tag">FastAPI</span>
+          <span class="tag">PostgreSQL</span>
+          <span class="tag">Redis</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">🔒</div>
+        <h3>Cybersecurity</h3>
+        <p>Web application security audits, penetration testing, and secure SDLC consulting. I find the vulnerabilities in your app before attackers do — and I fix them.</p>
+        <div class="skill-tags">
+          <span class="tag">OWASP</span>
+          <span class="tag">Burp Suite</span>
+          <span class="tag">CTF</span>
+          <span class="tag">Auth0</span>
+          <span class="tag">JWT</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">☁</div>
+        <h3>Cloud &amp; DevOps</h3>
+        <p>Full deployment pipelines on AWS and GCP. Docker, Kubernetes, CI/CD, monitoring. Your app stays up, scales automatically, and deploys without drama.</p>
+        <div class="skill-tags">
+          <span class="tag">AWS</span>
+          <span class="tag">Docker</span>
+          <span class="tag">Kubernetes</span>
+          <span class="tag">GitHub Actions</span>
+          <span class="tag">Terraform</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">🗄</div>
+        <h3>Databases &amp; Systems</h3>
+        <p>Deep CS fundamentals mean I understand query optimization, indexing strategies, and distributed data at a level most developers don't — thanks to four years of systems coursework.</p>
+        <div class="skill-tags">
+          <span class="tag">PostgreSQL</span>
+          <span class="tag">MongoDB</span>
+          <span class="tag">MySQL</span>
+          <span class="tag">Elasticsearch</span>
+          <span class="tag">DynamoDB</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">🧠</div>
+        <h3>AI Integration</h3>
+        <p>Build intelligent features into your product — LLM-powered interfaces, RAG pipelines, embedding search, and AI agents. The future is AI-native, and I can take you there.</p>
+        <div class="skill-tags">
+          <span class="tag">OpenAI API</span>
+          <span class="tag">LangChain</span>
+          <span class="tag">Pinecone</span>
+          <span class="tag">Python ML</span>
+          <span class="tag">RAG</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="projects" id="projects">
+  <div class="projects-inner">
+    <div class="reveal">
+      <div class="section-label">003 · Selected Work</div>
+      <h2 class="section-title"><em>Impact</em> over<br>aesthetics</h2>
+    </div>
+    <div class="projects-grid">
+      <div class="project-card featured reveal">
+        <div class="project-num">// Project 01 · Featured</div>
+        <h3>SecureVault SaaS Platform</h3>
+        <p>End-to-end encrypted document management platform for legal firms. Built with Next.js, Node.js, AES-256 encryption at rest, zero-knowledge architecture, and SOC 2 compliance controls. Processed 2M+ documents in the first month post-launch with 99.98% uptime. The client's previous platform had been breached — mine hasn't been.</p>
+        <div class="skill-tags" style="margin-top:1rem">
+          <span class="tag">Next.js</span>
+          <span class="tag">Node.js</span>
+          <span class="tag">AES-256</span>
+          <span class="tag">PostgreSQL</span>
+          <span class="tag">AWS</span>
+        </div>
+        <div class="project-meta">
+          <span class="project-type">SaaS · Security · Full-Stack</span>
+          <a href="#contact" class="project-link">Request Case Study →</a>
+        </div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-num">// Project 02</div>
+        <h3>E-Commerce API Gateway</h3>
+        <p>High-throughput API gateway handling 50k req/s for a D2C fashion brand. Designed circuit breakers, rate limiting, JWT auth, and a real-time inventory sync system across 3 warehouses. Reduced checkout errors by 94%.</p>
+        <div class="skill-tags" style="margin-top:1rem">
+          <span class="tag">Node.js</span><span class="tag">Redis</span><span class="tag">Docker</span>
+        </div>
+        <div class="project-meta">
+          <span class="project-type">Backend · API · E-Commerce</span>
+          <a href="#contact" class="project-link">Details →</a>
+        </div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-num">// Project 03</div>
+        <h3>AI Research Assistant</h3>
+        <p>LLM-powered research tool for a US-based edtech startup. RAG pipeline over 10,000+ academic papers with semantic search, citation generation, and multi-turn conversations. 4,000+ active users in beta.</p>
+        <div class="skill-tags" style="margin-top:1rem">
+          <span class="tag">LangChain</span><span class="tag">Pinecone</span><span class="tag">FastAPI</span>
+        </div>
+        <div class="project-meta">
+          <span class="project-type">AI · Full-Stack · EdTech</span>
+          <a href="#contact" class="project-link">Details →</a>
+        </div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-num">// Project 04</div>
+        <h3>Penetration Test + Report</h3>
+        <p>Security audit for a Series A fintech startup. Discovered 3 critical vulnerabilities including a stored XSS and an IDOR that exposed user financial data. Delivered detailed remediation report within 72 hours.</p>
+        <div class="skill-tags" style="margin-top:1rem">
+          <span class="tag">Burp Suite</span><span class="tag">OWASP</span><span class="tag">Python</span>
+        </div>
+        <div class="project-meta">
+          <span class="project-type">Security · Audit · FinTech</span>
+          <a href="#contact" class="project-link">Details →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES & PRICING -->
+<section id="services">
+  <div class="services-inner">
+    <div class="reveal">
+      <div class="section-label">004 · Services &amp; Rates</div>
+      <h2 class="section-title">What you get<br>when you <em>hire me</em></h2>
+    </div>
+    <div class="services-list reveal">
+      <div class="service-row">
+        <div class="service-num">01</div>
+        <div class="service-name">Full-Stack Web Application</div>
+        <div class="service-desc">End-to-end product — from database schema to deployed frontend. Includes auth, admin panel, API, and documentation.</div>
+        <div class="service-price">$2,500+<span>per project</span></div>
+      </div>
+      <div class="service-row">
+        <div class="service-num">02</div>
+        <div class="service-name">Security Audit &amp; Pen Testing</div>
+        <div class="service-desc">OWASP-based web app audit, vulnerability report, and remediation guidance. CVSS-scored findings.</div>
+        <div class="service-price">$800+<span>per audit</span></div>
+      </div>
+      <div class="service-row">
+        <div class="service-num">03</div>
+        <div class="service-name">Backend API Development</div>
+        <div class="service-desc">Scalable REST or GraphQL APIs with authentication, rate limiting, caching, and test coverage.</div>
+        <div class="service-price">$1,200+<span>per project</span></div>
+      </div>
+      <div class="service-row">
+        <div class="service-num">04</div>
+        <div class="service-name">AI Feature Integration</div>
+        <div class="service-desc">Add LLM-powered features to your existing product — chatbots, document Q&amp;A, semantic search, or AI agents.</div>
+        <div class="service-price">$1,500+<span>per integration</span></div>
+      </div>
+      <div class="service-row">
+        <div class="service-num">05</div>
+        <div class="service-name">Technical Consulting</div>
+        <div class="service-desc">Architecture reviews, tech stack decisions, code audits, and CTO-level advisory for early-stage startups.</div>
+        <div class="service-price">$80+<span>per hour</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section style="background: var(--obsidian-2)">
+  <div class="process-inner">
+    <div class="reveal" style="text-align: center;">
+      <div class="section-label" style="justify-content: center;">005 · How I Work</div>
+      <h2 class="section-title">No surprises.<br>Just <em>results.</em></h2>
+    </div>
+    <div class="process-steps reveal">
+      <div class="pstep">
+        <div class="pstep-num">1</div>
+        <h4>Discovery Call</h4>
+        <p>30-minute deep-dive into your requirements, constraints, and definition of success. Free.</p>
+      </div>
+      <div class="pstep">
+        <div class="pstep-num">2</div>
+        <h4>Proposal &amp; Scope</h4>
+        <p>Detailed technical proposal, milestones, timeline, and fixed pricing. No scope creep surprises.</p>
+      </div>
+      <div class="pstep">
+        <div class="pstep-num">3</div>
+        <h4>Build &amp; Update</h4>
+        <p>Weekly demo calls. You see progress constantly. Pivots are handled immediately, not at delivery.</p>
+      </div>
+      <div class="pstep">
+        <div class="pstep-num">4</div>
+        <h4>Deliver &amp; Support</h4>
+        <p>Full handoff with docs, deployment, and 2-week post-launch support included. Always.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+  <div class="testimonials-inner">
+    <div class="reveal">
+      <div class="section-label">006 · Client Words</div>
+      <h2 class="section-title">They trusted.<br>I <em>delivered.</em></h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="tcard reveal">
+        <div class="stars">★★★★★</div>
+        <p>Ashutosh found a vulnerability in our auth flow that three senior engineers had missed. Then fixed it in 48 hours. The IIT pedigree is real — he thinks differently.</p>
+        <div class="tcard-author">
+          <div class="tcard-avatar">AR</div>
+          <div>
+            <div class="tcard-name">Aditya R.</div>
+            <div class="tcard-role">CTO, FinTech Startup · USA</div>
+          </div>
+        </div>
+      </div>
+      <div class="tcard reveal">
+        <div class="stars">★★★★★</div>
+        <p>We needed a full-stack product in 6 weeks for our launch. Ashutosh delivered in 5, with docs and tests I didn't even ask for. Genuinely the best hire we've made on Upwork.</p>
+        <div class="tcard-author">
+          <div class="tcard-avatar">SM</div>
+          <div>
+            <div class="tcard-name">Sarah M.</div>
+            <div class="tcard-role">Founder, EdTech SaaS · UK</div>
+          </div>
+        </div>
+      </div>
+      <div class="tcard reveal">
+        <div class="stars">★★★★★</div>
+        <p>Technical depth beyond his years. He architected our API to handle 10x our expected load — which we eventually hit. Saved us from a scaling crisis we didn't know was coming.</p>
+        <div class="tcard-author">
+          <div class="tcard-avatar">PL</div>
+          <div>
+            <div class="tcard-name">Pierre L.</div>
+            <div class="tcard-role">Engineering Lead, E-Commerce · France</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="cta-bg"></div>
+  <div style="position: relative; z-index: 2;" class="reveal">
+    <div class="section-label" style="justify-content: center;">007 · Let's Build</div>
+    <h2 class="section-title">Ready to ship<br>something <em>great?</em></h2>
+    <p>Whether you have a detailed brief or just a problem to solve — let's talk. First conversation is always free, and I'll give you honest technical advice even if you don't hire me.</p>
+    <div class="cta-actions">
+      <a href="#" class="btn-primary" onclick="openHireModal(event)">Send Me a Message</a>
+      <a href="#services" class="btn-secondary">See Services <span class="arrow">→</span></a>
+    </div>
+    <div class="cta-contact" style="margin-top:2rem">
+      <a href="mailto:akhack9th@gmail.com">akhack9th@gmail.com</a>
+      &nbsp;·&nbsp;
+      <a href="https://www.instagram.com/ashu.px_root" target="_blank">@ashu.px_root</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="copy">© 2025 Ashutosh. All rights reserved.</div>
+  <div class="footer-iit">
+    Computer Science · <span>IIT Delhi</span> · New Delhi, India
+  </div>
+</footer>
+
+<!-- HIRE MODAL -->
+<style>
+  #hireModal {
+    display: none; position: fixed; inset: 0; z-index: 2000;
+    background: rgba(10,10,14,0.85);
+    backdrop-filter: blur(12px);
+    align-items: center; justify-content: center;
+  }
+  #hireModal.active { display: flex; animation: modalFadeIn 0.25s ease; }
+  @keyframes modalFadeIn { from { opacity:0; } to { opacity:1; } }
+  .modal-box {
+    background: #14141C;
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 8px;
+    padding: 2.5rem;
+    width: 100%; max-width: 440px;
+    margin: 1rem;
+    position: relative;
+    animation: modalSlideUp 0.3s cubic-bezier(0.16,1,0.3,1);
+  }
+  @keyframes modalSlideUp { from { transform:translateY(30px); opacity:0; } to { transform:translateY(0); opacity:1; } }
+  .modal-close {
+    position: absolute; top: 1.2rem; right: 1.2rem;
+    background: none; border: none; color: #8888A0;
+    font-size: 1.2rem; cursor: none; line-height: 1;
+    transition: color 0.2s;
+  }
+  .modal-close:hover { color: #C9A84C; }
+  .modal-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: #C9A84C; margin-bottom: 0.75rem;
+  }
+  .modal-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.8rem; line-height: 1.15;
+    color: #F8F8FC; margin-bottom: 0.6rem;
+  }
+  .modal-title em { color: #C9A84C; font-style: italic; }
+  .modal-sub {
+    font-size: 0.85rem; color: #8888A0; line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+  .modal-options { display: flex; flex-direction: column; gap: 0.85rem; }
+  .modal-btn {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1rem 1.25rem;
+    border-radius: 6px;
+    text-decoration: none;
+    border: 1px solid rgba(201,168,76,0.15);
+    background: rgba(201,168,76,0.04);
+    transition: all 0.2s; cursor: none;
+  }
+  .modal-btn:hover { border-color: rgba(201,168,76,0.45); background: rgba(201,168,76,0.1); transform: translateY(-1px); }
+  .modal-btn-icon {
+    width: 42px; height: 42px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.15rem; flex-shrink: 0;
+  }
+  .modal-btn-icon.email { background: rgba(201,168,76,0.12); }
+  .modal-btn-icon.insta { background: rgba(225,48,108,0.12); }
+  .modal-btn-info { flex: 1; }
+  .modal-btn-label {
+    font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: #8888A0; margin-bottom: 0.2rem;
+  }
+  .modal-btn-value {
+    font-size: 0.92rem; font-weight: 600; color: #F8F8FC;
+  }
+  .modal-btn-arrow { color: #C9A84C; font-size: 0.85rem; opacity: 0; transition: opacity 0.2s, transform 0.2s; }
+  .modal-btn:hover .modal-btn-arrow { opacity: 1; transform: translateX(3px); }
+  .modal-divider {
+    display: flex; align-items: center; gap: 0.75rem;
+    margin: 0.25rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem; color: #444458; letter-spacing: 0.1em;
+  }
+  .modal-divider::before, .modal-divider::after {
+    content: ''; flex: 1; height: 1px; background: rgba(201,168,76,0.08);
+  }
+  .modal-note {
+    margin-top: 1.5rem; padding-top: 1.25rem;
+    border-top: 1px solid rgba(201,168,76,0.08);
+    font-size: 0.78rem; color: #666680; text-align: center; line-height: 1.5;
+  }
+  .modal-note span { color: #C9A84C; }
+</style>
+
+<div id="hireModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeHireModal()">✕</button>
+    <div class="modal-tag">// Let's connect</div>
+    <h2 class="modal-title">Reach out &amp;<br><em>let's build.</em></h2>
+    <p class="modal-sub">Pick your preferred channel — I typically respond within a few hours.</p>
+    <div class="modal-options">
+      <a href="mailto:akhack9th@gmail.com?subject=Project%20Inquiry%20-%20Hire%20Ashutosh&body=Hi%20Ashutosh%2C%0A%0AI%20came%20across%20your%20portfolio%20and%20I%27m%20interested%20in%20working%20with%20you.%0A%0AProject%20details%3A%0A%0A" class="modal-btn">
+        <div class="modal-btn-icon email">✉</div>
+        <div class="modal-btn-info">
+          <div class="modal-btn-label">Email me at</div>
+          <div class="modal-btn-value">akhack9th@gmail.com</div>
+        </div>
+        <div class="modal-btn-arrow">→</div>
+      </a>
+      <div class="modal-divider">or</div>
+      <a href="https://www.instagram.com/ashu.px_root" target="_blank" rel="noopener" class="modal-btn">
+        <div class="modal-btn-icon insta">◈</div>
+        <div class="modal-btn-info">
+          <div class="modal-btn-label">DM on Instagram</div>
+          <div class="modal-btn-value">@ashu.px_root</div>
+        </div>
+        <div class="modal-btn-arrow">→</div>
+      </a>
+    </div>
+    <div class="modal-note">
+      Response time: <span>under 24 hours</span> · Free first consultation
+    </div>
+  </div>
+</div>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  const interactable = 'a, button, .skill-card, .project-card, .service-row, .tcard';
+  document.querySelectorAll(interactable).forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+  });
+  function animateCursor() {
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+
+  // Nav active on scroll
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('nav');
+    nav.style.borderBottomColor = window.scrollY > 50
+      ? 'rgba(201,168,76,0.15)' : 'rgba(201,168,76,0.08)';
+  });
+
+  // Mobile menu
+  function toggleMobileMenu() {
+    const menu = document.getElementById('mobileMenu');
+    const btn = document.getElementById('navHamburger');
+    menu.classList.toggle('open');
+    btn.classList.toggle('open');
+    document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+  }
+  function closeMobileMenu() {
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.getElementById('navHamburger').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Hire modal
+  function openHireModal(e) {
+    e.preventDefault();
+    document.getElementById('hireModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeHireModal() {
+    document.getElementById('hireModal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('hireModal').addEventListener('click', function(e) {
+    if (e.target === this) closeHireModal();
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeHireModal(); });
+</script>
+
+</body>
+</html>
